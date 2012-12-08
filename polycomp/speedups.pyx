@@ -55,7 +55,7 @@ def compress(polyline, float precision=5):
         prev_y = y_trunc
 
     poly = ''.join(compressed)
-    return poly.replace('\\', '\\\\')
+    return poly
 
 
 def decompress(compressed, float precision=5):

@@ -15,7 +15,6 @@ def compress(polyline, precision=5):
             s.append(chr((0x20 | (num & 0x1f)) + 63))
             num >>= 5
         s.append(chr(num + 63))
-        print(len(s))
         return ''.join(s)
 
     compressed = []
@@ -35,7 +34,7 @@ def compress(polyline, precision=5):
         prev_y = y_trunc
 
     poly = ''.join(compressed)
-    return poly.replace('\\', '\\\\')
+    return poly
 
 
 def decompress(compressed, precision=5):

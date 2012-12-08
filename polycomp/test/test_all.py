@@ -23,3 +23,11 @@ class DecompressionTestCase(unittest.TestCase):
     def runTest(self):
         dec = decompress(COMPRESSED_POLY)
         self.assertEqual(dec, DECOMPRESSED_POLY)
+
+
+class SlashTestCase(unittest.TestCase):
+    def runTest(self):
+        points = [(35.6, -82.55), (35.59985, -82.55015)]
+        enc = compress(points)
+        dec = decompress(enc)
+        self.assertEqual(points, dec)
