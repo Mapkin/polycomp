@@ -6,7 +6,6 @@ from __future__ import print_function
 from libc.string cimport memset
 
 cdef extern from "math.h":
-    float floorf(float x)
     float powf(float x, float y)
 
 
@@ -42,8 +41,8 @@ def compress(polyline, float precision=5):
     cdef int dy
 
     for i in range(0, n):
-        x_trunc = <int>floorf(polyline[i][0] * power)
-        y_trunc = <int>floorf(polyline[i][1] * power)
+        x_trunc = <int>(polyline[i][0] * power)
+        y_trunc = <int>(polyline[i][1] * power)
 
         dx = x_trunc - prev_x
         compressed.append(_encode_number(dx))
