@@ -33,21 +33,21 @@ def compress(polyline, float precision=5):
     compressed = []
     cdef float power = powf(10, precision)
     cdef long n = len(polyline)
-    cdef int prev_x = 0
-    cdef int prev_y = 0
-    cdef int x_trunc
-    cdef int y_trunc
+    cdef long prev_x = 0
+    cdef long prev_y = 0
+    cdef long x_trunc
+    cdef long y_trunc
     cdef int dx
     cdef int dy
 
     for i in range(0, n):
-        x_trunc = <int>(polyline[i][0] * power)
-        y_trunc = <int>(polyline[i][1] * power)
+        x_trunc = <long>round(polyline[i][0] * power)
+        y_trunc = <long>round(polyline[i][1] * power)
 
-        dx = x_trunc - prev_x
+        dx = <int>(x_trunc - prev_x)
         compressed.append(_encode_number(dx))
 
-        dy = y_trunc - prev_y
+        dy = <int>(y_trunc - prev_y)
         compressed.append(_encode_number(dy))
 
         prev_x = x_trunc
