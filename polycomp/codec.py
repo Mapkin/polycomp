@@ -21,8 +21,8 @@ def compress(polyline, precision=5):
     prev_y = 0
 
     for point in polyline:
-        x_trunc = int(point[0] * precision)
-        y_trunc = int(point[1] * precision)
+        x_trunc = long(round(point[0] * precision))
+        y_trunc = long(round(point[1] * precision))
 
         # Encode the difference between the coordinates.
         compressed.append(encode_number(x_trunc - prev_x))
