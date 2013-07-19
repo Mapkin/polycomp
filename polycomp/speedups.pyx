@@ -11,21 +11,21 @@ cdef extern from "math.h":
 
 # Writing this piece of the encoder's inner loop as an (almost) pure
 # C function results in a 4x speedup.
-cdef bytes _encode_number(int num):
-    cdef char buf[5]
+cdef bytes _encode_number(long num):
+    cdef char buf[16]
     cdef Py_ssize_t i = 0
 
     num <<= 1
     if num < 0:
         num = ~num
 
-    memset(buf, 0, 5)
     while num >= 0x20:
         buf[i] = (0x20 | (num & 0x1f)) + 63
         i += 1
         num >>= 5
 
     buf[i] = <char>(num + 63)
+    buf[i+1] = 0 # Is this necessary?
     return buf[:i+1]
 
 
@@ -37,17 +37,17 @@ def compress(polyline, float precision=5):
     cdef long prev_y = 0
     cdef long x_trunc
     cdef long y_trunc
-    cdef int dx
-    cdef int dy
+    cdef long dx
+    cdef long dy
 
     for i in range(0, n):
         x_trunc = <long>round(polyline[i][0] * power)
         y_trunc = <long>round(polyline[i][1] * power)
 
-        dx = <int>(x_trunc - prev_x)
+        dx = (x_trunc - prev_x)
         compressed.append(_encode_number(dx))
 
-        dy = <int>(y_trunc - prev_y)
+        dy = (y_trunc - prev_y)
         compressed.append(_encode_number(dy))
 
         prev_x = x_trunc
@@ -63,9 +63,9 @@ def decompress(compressed, float precision=5):
     cdef long y_trunc = 0
     cdef long dx
     cdef long dy
-    cdef int b
+    cdef long b
     cdef int shift
-    cdef int result
+    cdef long result
 
     cdef float power = powf(10, precision)
     cdef char* encStr = compressed 
@@ -109,4 +109,3 @@ def decompress(compressed, float precision=5):
         coords.append((x, y))
 
     return coords
-
