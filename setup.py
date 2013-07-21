@@ -53,7 +53,7 @@ ext_modules = [
 
 setup(
     name = "polycomp",
-    version = "1.0.0",
+    version = "1.1.0",
     author = "Mapkin",
     author_email = "opensource@mapkin.co",
     url = "https://github.com/Mapkin/polycomp",
