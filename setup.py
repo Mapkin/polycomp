@@ -18,7 +18,7 @@ class build_ext_with_cython(build_ext):
                 os.path.getmtime("polycomp/speedups.pyx") < os.path.getmtime("polycomp/speedups.c")):
                 print("polycomp/speedups.c up to date.")
                 return
-            print "creating polycomp/speedups.c"
+            print("creating polycomp/speedups.c")
             proc = subprocess.Popen(["cython", "polycomp/speedups.pyx"],
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT)
@@ -40,7 +40,7 @@ class build_ext_with_cython(build_ext):
             self.generate_c_file()
         except DistutilsPlatformError:
             if os.path.exists("polycomp/speedups.c"):
-                print "Found existing C file, ignoring errors."
+                print("Found existing C file, ignoring errors.")
             else:
                 raise
         build_ext.run(self)
