@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from __future__ import print_function
 
 import errno
 import os
@@ -16,7 +16,7 @@ class build_ext_with_cython(build_ext):
         try:
             if (os.path.exists("polycomp/speedups.c") and
                 os.path.getmtime("polycomp/speedups.pyx") < os.path.getmtime("polycomp/speedups.c")):
-                print "polycomp/speedups.c up to date."
+                print("polycomp/speedups.c up to date.")
                 return
             print "creating polycomp/speedups.c"
             proc = subprocess.Popen(["cython", "polycomp/speedups.pyx"],
@@ -24,15 +24,15 @@ class build_ext_with_cython(build_ext):
                                     stderr=subprocess.STDOUT)
         except OSError as e:
             if e.errno == errno.ENOENT:
-                print "Couldn't find cython command."
+                print("Couldn't find cython command.")
                 raise DistutilsPlatformError("Failed to generate C file with Cython.")
             else:
                 raise
         out = proc.communicate()[0]
         result = proc.wait()
         if result != 0:
-            print "Error during C file generation with Cython:"
-            print out
+            print("Error during C file generation with Cython:")
+            print(out)
             raise DistutilsPlatformError("Failed to generate C file with Cython.")
 
     def run(self):
