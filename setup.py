@@ -62,6 +62,9 @@ setup(
     long_description=open("README.md").read(),
     packages = find_packages(),
     ext_modules = ext_modules,
+    extras_require={
+        'test': ['pytest'],
+    },
     cmdclass = {'build_ext': build_ext_with_cython},
     classifiers = [
         "Development Status :: 4 - Beta",

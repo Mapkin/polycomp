@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-
-
-def compress(polyline, precision=5):
+def compress(polyline, precision=5, flipxy=False):
     def encode_number(num):
         """Base64-encode a signed number."""
         num = num << 1
@@ -25,8 +22,12 @@ def compress(polyline, precision=5):
         y_trunc = long(round(point[1] * precision))
 
         # Encode the difference between the coordinates.
-        compressed.append(encode_number(x_trunc - prev_x))
-        compressed.append(encode_number(y_trunc - prev_y))
+        x = encode_number(x_trunc - prev_x)
+        y = encode_number(y_trunc - prev_y)
+        if flipxy:
+            x, y = y, x
+        compressed.append(x)
+        compressed.append(y)
 
         prev_x = x_trunc
         prev_y = y_trunc
@@ -35,7 +36,7 @@ def compress(polyline, precision=5):
     return poly
 
 
-def decompress(compressed, precision=5):
+def decompress(compressed, precision=5, flipxy=False):
     coords = []
     precision = 10 ** precision
     x = 0
@@ -73,7 +74,10 @@ def decompress(compressed, precision=5):
 
         dy = ~(result >> 1) if result & 1 else result >> 1
         y += dy
-
-        coords.append((float(x) / precision, float(y) / precision))
+        
+        a, b = x, y
+        if flipxy:
+            a, b = b, a
+        coords.append((float(a) / precision, float(b) / precision))
 
     return coords

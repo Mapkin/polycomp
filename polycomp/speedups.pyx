@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 from libc.string cimport memset
+from libcpp cimport bool
 
 cdef extern from "math.h":
     float powf(float x, float y)
@@ -29,7 +30,7 @@ cdef bytes _encode_number(long num):
     return buf[:i+1]
 
 
-def compress(polyline, float precision=5):
+def compress(polyline, float precision=5, bint flipxy=False):
     compressed = []
     cdef float power = powf(10, precision)
     cdef long n = len(polyline)
@@ -45,10 +46,14 @@ def compress(polyline, float precision=5):
         y_trunc = <long>round(polyline[i][1] * power)
 
         dx = (x_trunc - prev_x)
-        compressed.append(_encode_number(dx))
-
         dy = (y_trunc - prev_y)
-        compressed.append(_encode_number(dy))
+
+        if not flipxy:
+            compressed.append(_encode_number(dx))
+            compressed.append(_encode_number(dy))
+        else:
+            compressed.append(_encode_number(dy))
+            compressed.append(_encode_number(dx))
 
         prev_x = x_trunc
         prev_y = y_trunc
@@ -57,7 +62,7 @@ def compress(polyline, float precision=5):
     return poly
 
 
-def decompress(compressed, float precision=5):
+def decompress(compressed, float precision=5, bint flipxy=False):
     coords = []
     cdef long x_trunc = 0
     cdef long y_trunc = 0
@@ -106,6 +111,9 @@ def decompress(compressed, float precision=5):
 
         x = float(x_trunc) / power
         y = float(y_trunc) / power 
-        coords.append((x, y))
+        if not flipxy:
+            coords.append((x, y))
+        else:
+            coords.append((y, x))
 
     return coords
