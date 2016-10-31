@@ -47,6 +47,6 @@ def test_compress_reversed(compress, decompress):
 
 
 @native_cython
-def test_decompress(compress, decompress):
+def test_decompress_reversed(compress, decompress):
     dec = decompress(COMPRESSED_POLY, flipxy=True)
     assert dec == [x[::-1] for x in DECOMPRESSED_POLY]
