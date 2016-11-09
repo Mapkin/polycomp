@@ -30,7 +30,7 @@ cdef bytes _encode_number(long num):
     return buf[:i+1]
 
 
-def compress(polyline, float precision=5, bint flipxy=False):
+def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):
     compressed = []
     cdef float power = powf(10, precision)
     cdef long n = len(polyline)
@@ -42,11 +42,14 @@ def compress(polyline, float precision=5, bint flipxy=False):
     cdef long dy
 
     for i in range(0, n):
-        x_trunc = <long>round(polyline[i][0] * power)
-        y_trunc = <long>round(polyline[i][1] * power)
-
-        dx = (x_trunc - prev_x)
-        dy = (y_trunc - prev_y)
+        if not deltas:
+            x_trunc = <long>round(polyline[i][0] * power)
+            y_trunc = <long>round(polyline[i][1] * power)
+            dx = (x_trunc - prev_x)
+            dy = (y_trunc - prev_y)
+        else:
+            dx = <long>round(polyline[i][0])
+            dy = <long>round(polyline[i][1])
 
         if not flipxy:
             compressed.append(_encode_number(dx))

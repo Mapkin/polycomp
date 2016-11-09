@@ -845,6 +845,7 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_round[] = "round";
 static const char __pyx_k_shift[] = "shift";
 static const char __pyx_k_coords[] = "coords";
+static const char __pyx_k_deltas[] = "deltas";
 static const char __pyx_k_encStr[] = "encStr";
 static const char __pyx_k_flipxy[] = "flipxy";
 static const char __pyx_k_length[] = "length";
@@ -867,6 +868,7 @@ static PyObject *__pyx_n_s_compress;
 static PyObject *__pyx_n_s_compressed;
 static PyObject *__pyx_n_s_coords;
 static PyObject *__pyx_n_s_decompress;
+static PyObject *__pyx_n_s_deltas;
 static PyObject *__pyx_n_s_dx;
 static PyObject *__pyx_n_s_dy;
 static PyObject *__pyx_n_s_encStr;
@@ -892,7 +894,7 @@ static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_x_trunc;
 static PyObject *__pyx_n_s_y;
 static PyObject *__pyx_n_s_y_trunc;
-static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_polyline, float __pyx_v_precision, int __pyx_v_flipxy); /* proto */
+static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_polyline, float __pyx_v_precision, int __pyx_v_flipxy, int __pyx_v_deltas); /* proto */
 static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_compressed, float __pyx_v_precision, int __pyx_v_flipxy); /* proto */
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__4;
@@ -1055,7 +1057,7 @@ static PyObject *__pyx_f_8polycomp_8speedups__encode_number(long __pyx_v_num) {
 /* "polycomp/speedups.pyx":33
  * 
  * 
- * def compress(polyline, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):             # <<<<<<<<<<<<<<
  *     compressed = []
  *     cdef float power = powf(10, precision)
  */
@@ -1067,16 +1069,18 @@ static PyObject *__pyx_pw_8polycomp_8speedups_1compress(PyObject *__pyx_self, Py
   PyObject *__pyx_v_polyline = 0;
   float __pyx_v_precision;
   int __pyx_v_flipxy;
+  int __pyx_v_deltas;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("compress (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_polyline,&__pyx_n_s_precision,&__pyx_n_s_flipxy,0};
-    PyObject* values[3] = {0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_polyline,&__pyx_n_s_precision,&__pyx_n_s_flipxy,&__pyx_n_s_deltas,0};
+    PyObject* values[4] = {0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -1098,12 +1102,18 @@ static PyObject *__pyx_pw_8polycomp_8speedups_1compress(PyObject *__pyx_self, Py
           PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_flipxy);
           if (value) { values[2] = value; kw_args--; }
         }
+        case  3:
+        if (kw_args > 0) {
+          PyObject* value = PyDict_GetItem(__pyx_kwds, __pyx_n_s_deltas);
+          if (value) { values[3] = value; kw_args--; }
+        }
       }
       if (unlikely(kw_args > 0)) {
         if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "compress") < 0)) __PYX_ERR(0, 33, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
         case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
         case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
@@ -1122,23 +1132,28 @@ static PyObject *__pyx_pw_8polycomp_8speedups_1compress(PyObject *__pyx_self, Py
     } else {
       __pyx_v_flipxy = ((int)0);
     }
+    if (values[3]) {
+      __pyx_v_deltas = __Pyx_PyObject_IsTrue(values[3]); if (unlikely((__pyx_v_deltas == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 33, __pyx_L3_error)
+    } else {
+      __pyx_v_deltas = ((int)0);
+    }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compress", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 33, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compress", 0, 1, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 33, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("polycomp.speedups.compress", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8polycomp_8speedups_compress(__pyx_self, __pyx_v_polyline, __pyx_v_precision, __pyx_v_flipxy);
+  __pyx_r = __pyx_pf_8polycomp_8speedups_compress(__pyx_self, __pyx_v_polyline, __pyx_v_precision, __pyx_v_flipxy, __pyx_v_deltas);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_polyline, float __pyx_v_precision, int __pyx_v_flipxy) {
+static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_polyline, float __pyx_v_precision, int __pyx_v_flipxy, int __pyx_v_deltas) {
   PyObject *__pyx_v_compressed = NULL;
   float __pyx_v_power;
   long __pyx_v_n;
@@ -1156,16 +1171,16 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
   Py_ssize_t __pyx_t_2;
   long __pyx_t_3;
   long __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
+  int __pyx_t_5;
   PyObject *__pyx_t_6 = NULL;
-  long __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_7 = NULL;
+  long __pyx_t_8;
   int __pyx_t_9;
   __Pyx_RefNannySetupContext("compress", 0);
 
   /* "polycomp/speedups.pyx":34
  * 
- * def compress(polyline, float precision=5, bint flipxy=False):
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):
  *     compressed = []             # <<<<<<<<<<<<<<
  *     cdef float power = powf(10, precision)
  *     cdef long n = len(polyline)
@@ -1176,7 +1191,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
   __pyx_t_1 = 0;
 
   /* "polycomp/speedups.pyx":35
- * def compress(polyline, float precision=5, bint flipxy=False):
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):
  *     compressed = []
  *     cdef float power = powf(10, precision)             # <<<<<<<<<<<<<<
  *     cdef long n = len(polyline)
@@ -1216,8 +1231,8 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
  *     cdef long dy
  * 
  *     for i in range(0, n):             # <<<<<<<<<<<<<<
- *         x_trunc = <long>round(polyline[i][0] * power)
- *         y_trunc = <long>round(polyline[i][1] * power)
+ *         if not deltas:
+ *             x_trunc = <long>round(polyline[i][0] * power)
  */
   __pyx_t_3 = __pyx_v_n;
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
@@ -1226,126 +1241,197 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
     /* "polycomp/speedups.pyx":45
  * 
  *     for i in range(0, n):
- *         x_trunc = <long>round(polyline[i][0] * power)             # <<<<<<<<<<<<<<
- *         y_trunc = <long>round(polyline[i][1] * power)
- * 
+ *         if not deltas:             # <<<<<<<<<<<<<<
+ *             x_trunc = <long>round(polyline[i][0] * power)
+ *             y_trunc = <long>round(polyline[i][1] * power)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyFloat_FromDouble(__pyx_v_power); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyNumber_Multiply(__pyx_t_5, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_GIVEREF(__pyx_t_6);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_6);
-    __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_1, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_long(__pyx_t_6); if (unlikely((__pyx_t_7 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_v_x_trunc = ((long)__pyx_t_7);
+    __pyx_t_5 = ((!(__pyx_v_deltas != 0)) != 0);
+    if (__pyx_t_5) {
 
-    /* "polycomp/speedups.pyx":46
+      /* "polycomp/speedups.pyx":46
  *     for i in range(0, n):
- *         x_trunc = <long>round(polyline[i][0] * power)
- *         y_trunc = <long>round(polyline[i][1] * power)             # <<<<<<<<<<<<<<
- * 
- *         dx = (x_trunc - prev_x)
+ *         if not deltas:
+ *             x_trunc = <long>round(polyline[i][0] * power)             # <<<<<<<<<<<<<<
+ *             y_trunc = <long>round(polyline[i][1] * power)
+ *             dx = (x_trunc - prev_x)
  */
-    __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_6, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyFloat_FromDouble(__pyx_v_power); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_5 = PyNumber_Multiply(__pyx_t_1, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_6, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_long(__pyx_t_5); if (unlikely((__pyx_t_7 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_v_y_trunc = ((long)__pyx_t_7);
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_power); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_7 = PyNumber_Multiply(__pyx_t_6, __pyx_t_1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_GIVEREF(__pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
+      __pyx_t_7 = 0;
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_1, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_7); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 46, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_v_x_trunc = ((long)__pyx_t_8);
 
-    /* "polycomp/speedups.pyx":48
- *         y_trunc = <long>round(polyline[i][1] * power)
+      /* "polycomp/speedups.pyx":47
+ *         if not deltas:
+ *             x_trunc = <long>round(polyline[i][0] * power)
+ *             y_trunc = <long>round(polyline[i][1] * power)             # <<<<<<<<<<<<<<
+ *             dx = (x_trunc - prev_x)
+ *             dy = (y_trunc - prev_y)
+ */
+      __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = PyFloat_FromDouble(__pyx_v_power); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_6 = PyNumber_Multiply(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_GIVEREF(__pyx_t_6);
+      PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6);
+      __pyx_t_6 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_7, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_6); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_v_y_trunc = ((long)__pyx_t_8);
+
+      /* "polycomp/speedups.pyx":48
+ *             x_trunc = <long>round(polyline[i][0] * power)
+ *             y_trunc = <long>round(polyline[i][1] * power)
+ *             dx = (x_trunc - prev_x)             # <<<<<<<<<<<<<<
+ *             dy = (y_trunc - prev_y)
+ *         else:
+ */
+      __pyx_v_dx = (__pyx_v_x_trunc - __pyx_v_prev_x);
+
+      /* "polycomp/speedups.pyx":49
+ *             y_trunc = <long>round(polyline[i][1] * power)
+ *             dx = (x_trunc - prev_x)
+ *             dy = (y_trunc - prev_y)             # <<<<<<<<<<<<<<
+ *         else:
+ *             dx = <long>round(polyline[i][0])
+ */
+      __pyx_v_dy = (__pyx_v_y_trunc - __pyx_v_prev_y);
+
+      /* "polycomp/speedups.pyx":45
  * 
- *         dx = (x_trunc - prev_x)             # <<<<<<<<<<<<<<
- *         dy = (y_trunc - prev_y)
+ *     for i in range(0, n):
+ *         if not deltas:             # <<<<<<<<<<<<<<
+ *             x_trunc = <long>round(polyline[i][0] * power)
+ *             y_trunc = <long>round(polyline[i][1] * power)
+ */
+      goto __pyx_L5;
+    }
+
+    /* "polycomp/speedups.pyx":51
+ *             dy = (y_trunc - prev_y)
+ *         else:
+ *             dx = <long>round(polyline[i][0])             # <<<<<<<<<<<<<<
+ *             dy = <long>round(polyline[i][1])
  * 
  */
-    __pyx_v_dx = (__pyx_v_x_trunc - __pyx_v_prev_x);
+    /*else*/ {
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_6, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_GIVEREF(__pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_7);
+      __pyx_t_7 = 0;
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_6, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_7); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_v_dx = ((long)__pyx_t_8);
 
-    /* "polycomp/speedups.pyx":49
- * 
- *         dx = (x_trunc - prev_x)
- *         dy = (y_trunc - prev_y)             # <<<<<<<<<<<<<<
+      /* "polycomp/speedups.pyx":52
+ *         else:
+ *             dx = <long>round(polyline[i][0])
+ *             dy = <long>round(polyline[i][1])             # <<<<<<<<<<<<<<
  * 
  *         if not flipxy:
  */
-    __pyx_v_dy = (__pyx_v_y_trunc - __pyx_v_prev_y);
+      __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_polyline, __pyx_v_i, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_6 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __Pyx_GIVEREF(__pyx_t_6);
+      PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_6);
+      __pyx_t_6 = 0;
+      __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_round, __pyx_t_7, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_8 = __Pyx_PyInt_As_long(__pyx_t_6); if (unlikely((__pyx_t_8 == (long)-1) && PyErr_Occurred())) __PYX_ERR(0, 52, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __pyx_v_dy = ((long)__pyx_t_8);
+    }
+    __pyx_L5:;
 
-    /* "polycomp/speedups.pyx":51
- *         dy = (y_trunc - prev_y)
+    /* "polycomp/speedups.pyx":54
+ *             dy = <long>round(polyline[i][1])
  * 
  *         if not flipxy:             # <<<<<<<<<<<<<<
  *             compressed.append(_encode_number(dx))
  *             compressed.append(_encode_number(dy))
  */
-    __pyx_t_8 = ((!(__pyx_v_flipxy != 0)) != 0);
-    if (__pyx_t_8) {
+    __pyx_t_5 = ((!(__pyx_v_flipxy != 0)) != 0);
+    if (__pyx_t_5) {
 
-      /* "polycomp/speedups.pyx":52
+      /* "polycomp/speedups.pyx":55
  * 
  *         if not flipxy:
  *             compressed.append(_encode_number(dx))             # <<<<<<<<<<<<<<
  *             compressed.append(_encode_number(dy))
  *         else:
  */
-      __pyx_t_5 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dx); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_5); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 52, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_6 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_6); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "polycomp/speedups.pyx":53
+      /* "polycomp/speedups.pyx":56
  *         if not flipxy:
  *             compressed.append(_encode_number(dx))
  *             compressed.append(_encode_number(dy))             # <<<<<<<<<<<<<<
  *         else:
  *             compressed.append(_encode_number(dy))
  */
-      __pyx_t_5 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_5); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 53, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_6 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dy); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_6); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "polycomp/speedups.pyx":51
- *         dy = (y_trunc - prev_y)
+      /* "polycomp/speedups.pyx":54
+ *             dy = <long>round(polyline[i][1])
  * 
  *         if not flipxy:             # <<<<<<<<<<<<<<
  *             compressed.append(_encode_number(dx))
  *             compressed.append(_encode_number(dy))
  */
-      goto __pyx_L5;
+      goto __pyx_L6;
     }
 
-    /* "polycomp/speedups.pyx":55
+    /* "polycomp/speedups.pyx":58
  *             compressed.append(_encode_number(dy))
  *         else:
  *             compressed.append(_encode_number(dy))             # <<<<<<<<<<<<<<
@@ -1353,26 +1439,26 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
  * 
  */
     /*else*/ {
-      __pyx_t_5 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dy); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_5); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 55, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_6 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dy); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 58, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_6); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 58, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-      /* "polycomp/speedups.pyx":56
+      /* "polycomp/speedups.pyx":59
  *         else:
  *             compressed.append(_encode_number(dy))
  *             compressed.append(_encode_number(dx))             # <<<<<<<<<<<<<<
  * 
  *         prev_x = x_trunc
  */
-      __pyx_t_5 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dx); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_5); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 56, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+      __pyx_t_6 = __pyx_f_8polycomp_8speedups__encode_number(__pyx_v_dx); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_6);
+      __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_compressed, __pyx_t_6); if (unlikely(__pyx_t_9 == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     }
-    __pyx_L5:;
+    __pyx_L6:;
 
-    /* "polycomp/speedups.pyx":58
+    /* "polycomp/speedups.pyx":61
  *             compressed.append(_encode_number(dx))
  * 
  *         prev_x = x_trunc             # <<<<<<<<<<<<<<
@@ -1381,7 +1467,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
  */
     __pyx_v_prev_x = __pyx_v_x_trunc;
 
-    /* "polycomp/speedups.pyx":59
+    /* "polycomp/speedups.pyx":62
  * 
  *         prev_x = x_trunc
  *         prev_y = y_trunc             # <<<<<<<<<<<<<<
@@ -1391,19 +1477,19 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
     __pyx_v_prev_y = __pyx_v_y_trunc;
   }
 
-  /* "polycomp/speedups.pyx":61
+  /* "polycomp/speedups.pyx":64
  *         prev_y = y_trunc
  * 
  *     poly = ''.join(compressed)             # <<<<<<<<<<<<<<
  *     return poly
  * 
  */
-  __pyx_t_5 = __Pyx_PyString_Join(__pyx_kp_s_, __pyx_v_compressed); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_v_poly = ((PyObject*)__pyx_t_5);
-  __pyx_t_5 = 0;
+  __pyx_t_6 = __Pyx_PyString_Join(__pyx_kp_s_, __pyx_v_compressed); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_v_poly = ((PyObject*)__pyx_t_6);
+  __pyx_t_6 = 0;
 
-  /* "polycomp/speedups.pyx":62
+  /* "polycomp/speedups.pyx":65
  * 
  *     poly = ''.join(compressed)
  *     return poly             # <<<<<<<<<<<<<<
@@ -1418,7 +1504,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
   /* "polycomp/speedups.pyx":33
  * 
  * 
- * def compress(polyline, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):             # <<<<<<<<<<<<<<
  *     compressed = []
  *     cdef float power = powf(10, precision)
  */
@@ -1426,8 +1512,8 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
   __Pyx_AddTraceback("polycomp.speedups.compress", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
@@ -1438,7 +1524,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_compress(CYTHON_UNUSED PyObject *_
   return __pyx_r;
 }
 
-/* "polycomp/speedups.pyx":65
+/* "polycomp/speedups.pyx":68
  * 
  * 
  * def decompress(compressed, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
@@ -1486,7 +1572,7 @@ static PyObject *__pyx_pw_8polycomp_8speedups_3decompress(PyObject *__pyx_self, 
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompress") < 0)) __PYX_ERR(0, 65, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompress") < 0)) __PYX_ERR(0, 68, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1499,19 +1585,19 @@ static PyObject *__pyx_pw_8polycomp_8speedups_3decompress(PyObject *__pyx_self, 
     }
     __pyx_v_compressed = values[0];
     if (values[1]) {
-      __pyx_v_precision = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_precision == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
+      __pyx_v_precision = __pyx_PyFloat_AsFloat(values[1]); if (unlikely((__pyx_v_precision == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
     } else {
       __pyx_v_precision = ((float)5.0);
     }
     if (values[2]) {
-      __pyx_v_flipxy = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_flipxy == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 65, __pyx_L3_error)
+      __pyx_v_flipxy = __Pyx_PyObject_IsTrue(values[2]); if (unlikely((__pyx_v_flipxy == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 68, __pyx_L3_error)
     } else {
       __pyx_v_flipxy = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("decompress", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 65, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("decompress", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 68, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("polycomp.speedups.decompress", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1551,19 +1637,19 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
   int __pyx_t_8;
   __Pyx_RefNannySetupContext("decompress", 0);
 
-  /* "polycomp/speedups.pyx":66
+  /* "polycomp/speedups.pyx":69
  * 
  * def decompress(compressed, float precision=5, bint flipxy=False):
  *     coords = []             # <<<<<<<<<<<<<<
  *     cdef long x_trunc = 0
  *     cdef long y_trunc = 0
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_coords = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "polycomp/speedups.pyx":67
+  /* "polycomp/speedups.pyx":70
  * def decompress(compressed, float precision=5, bint flipxy=False):
  *     coords = []
  *     cdef long x_trunc = 0             # <<<<<<<<<<<<<<
@@ -1572,7 +1658,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
   __pyx_v_x_trunc = 0;
 
-  /* "polycomp/speedups.pyx":68
+  /* "polycomp/speedups.pyx":71
  *     coords = []
  *     cdef long x_trunc = 0
  *     cdef long y_trunc = 0             # <<<<<<<<<<<<<<
@@ -1581,7 +1667,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
   __pyx_v_y_trunc = 0;
 
-  /* "polycomp/speedups.pyx":75
+  /* "polycomp/speedups.pyx":78
  *     cdef long result
  * 
  *     cdef float power = powf(10, precision)             # <<<<<<<<<<<<<<
@@ -1590,27 +1676,27 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
   __pyx_v_power = powf(10.0, __pyx_v_precision);
 
-  /* "polycomp/speedups.pyx":76
+  /* "polycomp/speedups.pyx":79
  * 
  *     cdef float power = powf(10, precision)
  *     cdef char* encStr = compressed             # <<<<<<<<<<<<<<
  *     cdef long length = len(compressed)
  *     cdef int i = 0
  */
-  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsString(__pyx_v_compressed); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   __pyx_v_encStr = __pyx_t_2;
 
-  /* "polycomp/speedups.pyx":77
+  /* "polycomp/speedups.pyx":80
  *     cdef float power = powf(10, precision)
  *     cdef char* encStr = compressed
  *     cdef long length = len(compressed)             # <<<<<<<<<<<<<<
  *     cdef int i = 0
  * 
  */
-  __pyx_t_3 = PyObject_Length(__pyx_v_compressed); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_v_compressed); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 80, __pyx_L1_error)
   __pyx_v_length = __pyx_t_3;
 
-  /* "polycomp/speedups.pyx":78
+  /* "polycomp/speedups.pyx":81
  *     cdef char* encStr = compressed
  *     cdef long length = len(compressed)
  *     cdef int i = 0             # <<<<<<<<<<<<<<
@@ -1619,7 +1705,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
   __pyx_v_i = 0;
 
-  /* "polycomp/speedups.pyx":80
+  /* "polycomp/speedups.pyx":83
  *     cdef int i = 0
  * 
  *     while i < length:             # <<<<<<<<<<<<<<
@@ -1630,7 +1716,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     __pyx_t_4 = ((__pyx_v_i < __pyx_v_length) != 0);
     if (!__pyx_t_4) break;
 
-    /* "polycomp/speedups.pyx":81
+    /* "polycomp/speedups.pyx":84
  * 
  *     while i < length:
  *         b = 0             # <<<<<<<<<<<<<<
@@ -1639,7 +1725,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_b = 0;
 
-    /* "polycomp/speedups.pyx":82
+    /* "polycomp/speedups.pyx":85
  *     while i < length:
  *         b = 0
  *         shift = 0             # <<<<<<<<<<<<<<
@@ -1648,7 +1734,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_shift = 0;
 
-    /* "polycomp/speedups.pyx":83
+    /* "polycomp/speedups.pyx":86
  *         b = 0
  *         shift = 0
  *         result = 0             # <<<<<<<<<<<<<<
@@ -1657,7 +1743,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_result = 0;
 
-    /* "polycomp/speedups.pyx":85
+    /* "polycomp/speedups.pyx":88
  *         result = 0
  * 
  *         while True:             # <<<<<<<<<<<<<<
@@ -1666,7 +1752,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     while (1) {
 
-      /* "polycomp/speedups.pyx":86
+      /* "polycomp/speedups.pyx":89
  * 
  *         while True:
  *             b = encStr[i] - 63             # <<<<<<<<<<<<<<
@@ -1675,7 +1761,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_b = ((__pyx_v_encStr[__pyx_v_i]) - 63);
 
-      /* "polycomp/speedups.pyx":87
+      /* "polycomp/speedups.pyx":90
  *         while True:
  *             b = encStr[i] - 63
  *             i += 1             # <<<<<<<<<<<<<<
@@ -1684,7 +1770,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "polycomp/speedups.pyx":89
+      /* "polycomp/speedups.pyx":92
  *             i += 1
  * 
  *             result |= (b & 0x1f) << shift             # <<<<<<<<<<<<<<
@@ -1693,7 +1779,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_result = (__pyx_v_result | ((__pyx_v_b & 0x1f) << __pyx_v_shift));
 
-      /* "polycomp/speedups.pyx":90
+      /* "polycomp/speedups.pyx":93
  * 
  *             result |= (b & 0x1f) << shift
  *             shift += 5             # <<<<<<<<<<<<<<
@@ -1702,7 +1788,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_shift = (__pyx_v_shift + 5);
 
-      /* "polycomp/speedups.pyx":91
+      /* "polycomp/speedups.pyx":94
  *             result |= (b & 0x1f) << shift
  *             shift += 5
  *             if b < 0x20:             # <<<<<<<<<<<<<<
@@ -1712,7 +1798,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
       __pyx_t_4 = ((__pyx_v_b < 0x20) != 0);
       if (__pyx_t_4) {
 
-        /* "polycomp/speedups.pyx":92
+        /* "polycomp/speedups.pyx":95
  *             shift += 5
  *             if b < 0x20:
  *                 break             # <<<<<<<<<<<<<<
@@ -1721,7 +1807,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
         goto __pyx_L6_break;
 
-        /* "polycomp/speedups.pyx":91
+        /* "polycomp/speedups.pyx":94
  *             result |= (b & 0x1f) << shift
  *             shift += 5
  *             if b < 0x20:             # <<<<<<<<<<<<<<
@@ -1732,7 +1818,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     }
     __pyx_L6_break:;
 
-    /* "polycomp/speedups.pyx":94
+    /* "polycomp/speedups.pyx":97
  *                 break
  * 
  *         dx = ~(result >> 1) if result & 1 else result >> 1             # <<<<<<<<<<<<<<
@@ -1746,7 +1832,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     }
     __pyx_v_dx = __pyx_t_5;
 
-    /* "polycomp/speedups.pyx":95
+    /* "polycomp/speedups.pyx":98
  * 
  *         dx = ~(result >> 1) if result & 1 else result >> 1
  *         x_trunc += dx             # <<<<<<<<<<<<<<
@@ -1755,7 +1841,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_x_trunc = (__pyx_v_x_trunc + __pyx_v_dx);
 
-    /* "polycomp/speedups.pyx":97
+    /* "polycomp/speedups.pyx":100
  *         x_trunc += dx
  * 
  *         shift = 0             # <<<<<<<<<<<<<<
@@ -1764,7 +1850,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_shift = 0;
 
-    /* "polycomp/speedups.pyx":98
+    /* "polycomp/speedups.pyx":101
  * 
  *         shift = 0
  *         result = 0             # <<<<<<<<<<<<<<
@@ -1773,7 +1859,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_result = 0;
 
-    /* "polycomp/speedups.pyx":100
+    /* "polycomp/speedups.pyx":103
  *         result = 0
  * 
  *         while True:             # <<<<<<<<<<<<<<
@@ -1782,7 +1868,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     while (1) {
 
-      /* "polycomp/speedups.pyx":101
+      /* "polycomp/speedups.pyx":104
  * 
  *         while True:
  *             b = encStr[i] - 63             # <<<<<<<<<<<<<<
@@ -1791,7 +1877,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_b = ((__pyx_v_encStr[__pyx_v_i]) - 63);
 
-      /* "polycomp/speedups.pyx":102
+      /* "polycomp/speedups.pyx":105
  *         while True:
  *             b = encStr[i] - 63
  *             i += 1             # <<<<<<<<<<<<<<
@@ -1800,7 +1886,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_i = (__pyx_v_i + 1);
 
-      /* "polycomp/speedups.pyx":104
+      /* "polycomp/speedups.pyx":107
  *             i += 1
  * 
  *             result |= (b & 0x1f) << shift             # <<<<<<<<<<<<<<
@@ -1809,7 +1895,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_result = (__pyx_v_result | ((__pyx_v_b & 0x1f) << __pyx_v_shift));
 
-      /* "polycomp/speedups.pyx":105
+      /* "polycomp/speedups.pyx":108
  * 
  *             result |= (b & 0x1f) << shift
  *             shift += 5             # <<<<<<<<<<<<<<
@@ -1818,7 +1904,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
       __pyx_v_shift = (__pyx_v_shift + 5);
 
-      /* "polycomp/speedups.pyx":106
+      /* "polycomp/speedups.pyx":109
  *             result |= (b & 0x1f) << shift
  *             shift += 5
  *             if b < 0x20:             # <<<<<<<<<<<<<<
@@ -1828,7 +1914,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
       __pyx_t_4 = ((__pyx_v_b < 0x20) != 0);
       if (__pyx_t_4) {
 
-        /* "polycomp/speedups.pyx":107
+        /* "polycomp/speedups.pyx":110
  *             shift += 5
  *             if b < 0x20:
  *                 break             # <<<<<<<<<<<<<<
@@ -1837,7 +1923,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
         goto __pyx_L9_break;
 
-        /* "polycomp/speedups.pyx":106
+        /* "polycomp/speedups.pyx":109
  *             result |= (b & 0x1f) << shift
  *             shift += 5
  *             if b < 0x20:             # <<<<<<<<<<<<<<
@@ -1848,7 +1934,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     }
     __pyx_L9_break:;
 
-    /* "polycomp/speedups.pyx":109
+    /* "polycomp/speedups.pyx":112
  *                 break
  * 
  *         dy = ~(result >> 1) if result & 1 else result >> 1             # <<<<<<<<<<<<<<
@@ -1862,7 +1948,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     }
     __pyx_v_dy = __pyx_t_5;
 
-    /* "polycomp/speedups.pyx":110
+    /* "polycomp/speedups.pyx":113
  * 
  *         dy = ~(result >> 1) if result & 1 else result >> 1
  *         y_trunc += dy             # <<<<<<<<<<<<<<
@@ -1871,7 +1957,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     __pyx_v_y_trunc = (__pyx_v_y_trunc + __pyx_v_dy);
 
-    /* "polycomp/speedups.pyx":112
+    /* "polycomp/speedups.pyx":115
  *         y_trunc += dy
  * 
  *         x = float(x_trunc) / power             # <<<<<<<<<<<<<<
@@ -1880,11 +1966,11 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     if (unlikely(__pyx_v_power == 0)) {
       PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 112, __pyx_L1_error)
+      __PYX_ERR(0, 115, __pyx_L1_error)
     }
     __pyx_v_x = (((double)__pyx_v_x_trunc) / __pyx_v_power);
 
-    /* "polycomp/speedups.pyx":113
+    /* "polycomp/speedups.pyx":116
  * 
  *         x = float(x_trunc) / power
  *         y = float(y_trunc) / power             # <<<<<<<<<<<<<<
@@ -1893,11 +1979,11 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  */
     if (unlikely(__pyx_v_power == 0)) {
       PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 113, __pyx_L1_error)
+      __PYX_ERR(0, 116, __pyx_L1_error)
     }
     __pyx_v_y = (((double)__pyx_v_y_trunc) / __pyx_v_power);
 
-    /* "polycomp/speedups.pyx":114
+    /* "polycomp/speedups.pyx":117
  *         x = float(x_trunc) / power
  *         y = float(y_trunc) / power
  *         if not flipxy:             # <<<<<<<<<<<<<<
@@ -1907,18 +1993,18 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
     __pyx_t_4 = ((!(__pyx_v_flipxy != 0)) != 0);
     if (__pyx_t_4) {
 
-      /* "polycomp/speedups.pyx":115
+      /* "polycomp/speedups.pyx":118
  *         y = float(y_trunc) / power
  *         if not flipxy:
  *             coords.append((x, y))             # <<<<<<<<<<<<<<
  *         else:
  *             coords.append((y, x))
  */
-      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_1 = PyFloat_FromDouble(__pyx_v_x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_y); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_y); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_GIVEREF(__pyx_t_1);
       PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_1);
@@ -1926,10 +2012,10 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
       PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_6);
       __pyx_t_1 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_coords, __pyx_t_7); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_coords, __pyx_t_7); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 118, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-      /* "polycomp/speedups.pyx":114
+      /* "polycomp/speedups.pyx":117
  *         x = float(x_trunc) / power
  *         y = float(y_trunc) / power
  *         if not flipxy:             # <<<<<<<<<<<<<<
@@ -1939,7 +2025,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
       goto __pyx_L11;
     }
 
-    /* "polycomp/speedups.pyx":117
+    /* "polycomp/speedups.pyx":120
  *             coords.append((x, y))
  *         else:
  *             coords.append((y, x))             # <<<<<<<<<<<<<<
@@ -1947,11 +2033,11 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
  *     return coords
  */
     /*else*/ {
-      __pyx_t_7 = PyFloat_FromDouble(__pyx_v_y); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 117, __pyx_L1_error)
+      __pyx_t_7 = PyFloat_FromDouble(__pyx_v_y); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_x); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 117, __pyx_L1_error)
+      __pyx_t_6 = PyFloat_FromDouble(__pyx_v_x); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_6);
-      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_GIVEREF(__pyx_t_7);
       PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
@@ -1959,13 +2045,13 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
       PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_6);
       __pyx_t_7 = 0;
       __pyx_t_6 = 0;
-      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_coords, __pyx_t_1); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 117, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyList_Append(__pyx_v_coords, __pyx_t_1); if (unlikely(__pyx_t_8 == -1)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     }
     __pyx_L11:;
   }
 
-  /* "polycomp/speedups.pyx":119
+  /* "polycomp/speedups.pyx":122
  *             coords.append((y, x))
  * 
  *     return coords             # <<<<<<<<<<<<<<
@@ -1975,7 +2061,7 @@ static PyObject *__pyx_pf_8polycomp_8speedups_2decompress(CYTHON_UNUSED PyObject
   __pyx_r = __pyx_v_coords;
   goto __pyx_L0;
 
-  /* "polycomp/speedups.pyx":65
+  /* "polycomp/speedups.pyx":68
  * 
  * 
  * def decompress(compressed, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
@@ -2027,6 +2113,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_compressed, __pyx_k_compressed, sizeof(__pyx_k_compressed), 0, 0, 1, 1},
   {&__pyx_n_s_coords, __pyx_k_coords, sizeof(__pyx_k_coords), 0, 0, 1, 1},
   {&__pyx_n_s_decompress, __pyx_k_decompress, sizeof(__pyx_k_decompress), 0, 0, 1, 1},
+  {&__pyx_n_s_deltas, __pyx_k_deltas, sizeof(__pyx_k_deltas), 0, 0, 1, 1},
   {&__pyx_n_s_dx, __pyx_k_dx, sizeof(__pyx_k_dx), 0, 0, 1, 1},
   {&__pyx_n_s_dy, __pyx_k_dy, sizeof(__pyx_k_dy), 0, 0, 1, 1},
   {&__pyx_n_s_encStr, __pyx_k_encStr, sizeof(__pyx_k_encStr), 0, 0, 1, 1},
@@ -2056,7 +2143,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 };
 static int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 44, __pyx_L1_error)
-  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_builtin_round = __Pyx_GetBuiltinName(__pyx_n_s_round); if (!__pyx_builtin_round) __PYX_ERR(0, 46, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2069,26 +2156,26 @@ static int __Pyx_InitCachedConstants(void) {
   /* "polycomp/speedups.pyx":33
  * 
  * 
- * def compress(polyline, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):             # <<<<<<<<<<<<<<
  *     compressed = []
  *     cdef float power = powf(10, precision)
  */
-  __pyx_tuple__2 = PyTuple_Pack(14, __pyx_n_s_polyline, __pyx_n_s_precision, __pyx_n_s_flipxy, __pyx_n_s_compressed, __pyx_n_s_power, __pyx_n_s_n, __pyx_n_s_prev_x, __pyx_n_s_prev_y, __pyx_n_s_x_trunc, __pyx_n_s_y_trunc, __pyx_n_s_dx, __pyx_n_s_dy, __pyx_n_s_i, __pyx_n_s_poly); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(15, __pyx_n_s_polyline, __pyx_n_s_precision, __pyx_n_s_flipxy, __pyx_n_s_deltas, __pyx_n_s_compressed, __pyx_n_s_power, __pyx_n_s_n, __pyx_n_s_prev_x, __pyx_n_s_prev_y, __pyx_n_s_x_trunc, __pyx_n_s_y_trunc, __pyx_n_s_dx, __pyx_n_s_dy, __pyx_n_s_i, __pyx_n_s_poly); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
-  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(3, 0, 14, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_jwasserman50_projects_pol, __pyx_n_s_compress, 33, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_codeobj__3 = (PyObject*)__Pyx_PyCode_New(4, 0, 15, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__2, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_jwasserman50_projects_pol, __pyx_n_s_compress, 33, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__3)) __PYX_ERR(0, 33, __pyx_L1_error)
 
-  /* "polycomp/speedups.pyx":65
+  /* "polycomp/speedups.pyx":68
  * 
  * 
  * def decompress(compressed, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
  *     coords = []
  *     cdef long x_trunc = 0
  */
-  __pyx_tuple__4 = PyTuple_Pack(17, __pyx_n_s_compressed, __pyx_n_s_precision, __pyx_n_s_flipxy, __pyx_n_s_coords, __pyx_n_s_x_trunc, __pyx_n_s_y_trunc, __pyx_n_s_dx, __pyx_n_s_dy, __pyx_n_s_b, __pyx_n_s_shift, __pyx_n_s_result, __pyx_n_s_power, __pyx_n_s_encStr, __pyx_n_s_length, __pyx_n_s_i, __pyx_n_s_x, __pyx_n_s_y); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(17, __pyx_n_s_compressed, __pyx_n_s_precision, __pyx_n_s_flipxy, __pyx_n_s_coords, __pyx_n_s_x_trunc, __pyx_n_s_y_trunc, __pyx_n_s_dx, __pyx_n_s_dy, __pyx_n_s_b, __pyx_n_s_shift, __pyx_n_s_result, __pyx_n_s_power, __pyx_n_s_encStr, __pyx_n_s_length, __pyx_n_s_i, __pyx_n_s_x, __pyx_n_s_y); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(3, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_jwasserman50_projects_pol, __pyx_n_s_decompress, 65, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(3, 0, 17, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_Users_jwasserman50_projects_pol, __pyx_n_s_decompress, 68, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2198,7 +2285,7 @@ PyMODINIT_FUNC PyInit_speedups(void)
   /* "polycomp/speedups.pyx":33
  * 
  * 
- * def compress(polyline, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
+ * def compress(polyline, float precision=5, bint flipxy=False, bint deltas=False):             # <<<<<<<<<<<<<<
  *     compressed = []
  *     cdef float power = powf(10, precision)
  */
@@ -2207,16 +2294,16 @@ PyMODINIT_FUNC PyInit_speedups(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_compress, __pyx_t_1) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "polycomp/speedups.pyx":65
+  /* "polycomp/speedups.pyx":68
  * 
  * 
  * def decompress(compressed, float precision=5, bint flipxy=False):             # <<<<<<<<<<<<<<
  *     coords = []
  *     cdef long x_trunc = 0
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8polycomp_8speedups_3decompress, NULL, __pyx_n_s_polycomp_speedups); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8polycomp_8speedups_3decompress, NULL, __pyx_n_s_polycomp_speedups); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decompress, __pyx_t_1) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decompress, __pyx_t_1) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "polycomp/speedups.pyx":1

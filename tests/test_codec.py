@@ -14,6 +14,7 @@ from polycomp.speedups import (
 COMPRESSED_POLY = '_p~iF~ps|U_ulLnnqC_mqNvxq`@'
 COMPRESSED_POLY_REVERSED = '~ps|U_p~iFnnqC_ulLvxq`@_mqN'
 DECOMPRESSED_POLY = [(38.5, -120.2), (40.7, -120.95), (43.252, -126.453)]
+DELTA_POINTS = [(3850000, -12020000), (220000L, -75000), (255200, -550300)]
 native_cython = pytest.mark.parametrize("compress, decompress", [
     (compress_py, decompress_py),
     (compress_cy, decompress_cy),
@@ -50,3 +51,9 @@ def test_compress_reversed(compress, decompress):
 def test_decompress_reversed(compress, decompress):
     dec = decompress(COMPRESSED_POLY, flipxy=True)
     assert dec == [x[::-1] for x in DECOMPRESSED_POLY]
+
+
+@native_cython
+def test_compress_deltas(compress, decompress):
+    enc = compress(DELTA_POINTS, deltas=True)
+    assert enc == COMPRESSED_POLY
